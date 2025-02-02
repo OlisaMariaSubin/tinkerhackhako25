@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #333;
+            padding: 20px;
+            font-size: 24px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #333;
+            border-radius: 10px;
+        }
+        select, textarea, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .chat-box {
+            background: #444;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>AI Chatbot</header>
+
+    <div class="container">
+        <h2>Train the Chatbot</h2>
+        <textarea id="trainText" rows="4" placeholder="Enter training text..."></textarea>
+        <button onclick="trainAI()">Train AI</button>
+        <p id="trainResponse"></p>
+    </div>
+
+    <div class="container">
+        <h2>Chat with AI</h2>
+        <select id="mode">
+            <option value="casual">Casual</option>
+            <option value="formal">Formal</option>
+            <option value="flirty">Flirty</option>
+            <option value="sarcastic">Sarcastic</option>
+        </select>
+        <textarea id="userMessage" rows="4" placeholder="Say something..."></textarea>
+        <button onclick="sendMessage()">Send</button>
+        <div class="chat-box" id="chatResponse"></div>
+    </div>
+
+    <script>
+        async function trainAI() {
+            let text = document.getElementById("trainText").value;
+            if (!text) return alert("Please enter text to train the AI.");
+
+            let response = await fetch("http://127.0.0.1:5000/train", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: text })
+            });
+
+            let data = await response.json();
+            document.getElementById("trainResponse").innerText = "Training Result: " + data.response;
+        }
+
+        async function sendMessage() {
+            let message = document.getElementById("userMessage").value;
+            let mode = document.getElementById("mode").value;
+            if (!message) return alert("Please enter a message.");
+
+            let response = await fetch("http://127.0.0.1:5000/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message, mode: mode })
+            });
+
+            let data = await response.json();
+            document.getElementById("chatResponse").innerText = "AI: " + data.response;
+        }
+    </script>
+
+</body>
+</html>

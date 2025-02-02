@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+
+    <style>
+        .chat-window {
+            height: 400px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .message-sent {
+            justify-content: flex-end;
+        }
+
+        .message-received {
+            justify-content: flex-start;
+        }
+
+        .message {
+            max-width: 50%;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-sent .message {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .message-received .message {
+            background-color: #e5e7eb;
+            color: black;
+        }
+
+        .timestamp {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-white flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-2xl bg-white shadow-lg rounded-lg p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl font-bold">Chat App</h2>
+        </div>
+        <div class="chat-window flex flex-col" id="chatWindow">
+            <!-- Messages will be dynamically added here -->
+        </div>
+        <div class="flex">
+            <input type="text" id="messageInput" placeholder="Type a message..." class="flex-1 mr-2 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button id="sendButton" class="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Send</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        lucide.createIcons();  // Initialize icons from Lucide
+
+        const socket = io();  // Connect to the Socket.IO server
+        const chatWindow = document.getElementById('chatWindow');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+
+        // Prompt for username
+        const username = prompt('Enter your username:');
+        if (!username) {
+            alert('You must enter a username to chat.');
+            window.location.reload();
+        }
+
+        // Send message
+        sendButton.addEventListener('click', () => {
+            const messageText = messageInput.value.trim();
+            if (messageText) {
+                const message = {
+                    text: messageText,
+                    sender: username,
+                    timestamp: new Date()
+                };
+                socket.emit('chat message', message);  // Send message to the server
+                messageInput.value = '';
+            }
+        });
+
+        // Handle Enter key
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+
+        // Receive messages
+        socket.on('chat message', (msg) => {
+            addMessage(msg.text, msg.sender === username, msg.timestamp);
+        });
+
+        // Add a message to the chat window
+        function addMessage(text, isSent, timestamp) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('flex', isSent ? 'message-sent' : 'message-received', 'mb-2');
+
+            const messageContent = document.createElement('div');
+            messageContent.classList.add('message');
+
+            const messageText = document.createElement('p');
+            messageText.textContent = text;
+
+            const timestampElement = document.createElement('span');
+            timestampElement.classList.add('timestamp');
+            timestampElement.innerHTML = `<span data-lucide="clock" class="w-3 h-3 mr-1"></span>${formatDistanceToNow(new Date(timestamp))}`;
+
+            messageContent.appendChild(messageText);
+            messageContent.appendChild(timestampElement);
+            messageElement.appendChild(messageContent);
+
+            chatWindow.appendChild(messageElement);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // Format timestamp
+        function formatDistanceToNow(date) {
+            const now = new Date();
+            const diff = now - date;
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            if (seconds < 60) {
+                return `${seconds} seconds ago`;
+            } else if (minutes < 60) {
+                return `${minutes} minutes ago`;
+            } else if (hours < 24) {
+                return `${hours} hours ago`;
+            } else {
+                return `${days} days ago`;
+            }
+        }
+    </script>
+</body>
+</html>
