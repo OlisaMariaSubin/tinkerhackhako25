@@ -126,6 +126,7 @@ For managing users, reviewing performance data, and adjusting model parameters a
 # Build Photos
 ![Team](Add photo of your team here)
 ![WhatsApp Image 2025-02-02 at 10 42 03_fb4d9a85](https://github.com/user-attachments/assets/9b19bbf8-8d92-4bbb-bef4-ee8f7de11aa9)
+https://github.com/OlisaMariaSubin/tinkerhackhako25/blob/main/photo.jpg
 
 ![Final](Add photo of final product here)
 *Explain the final build*
