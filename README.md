@@ -83,13 +83,16 @@ For Software:
 
 # Screenshots (Add at least 3)
 ![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+*Add caption explaining what this shows*![image](https://github.com/user-attachments/assets/08acb06f-4e09-4734-975a-16fd9a44d2e1) basic features
+
 
 ![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+*Add caption explaining what this shows*![image](https://github.com/user-attachments/assets/9f0d8f6c-1e95-494b-9f9d-d2173ac2ca72) main interface
+
 
 ![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![image](https://github.com/user-attachments/assets/5c080b48-f2ce-4a62-bb7c-dfc2acabd95c) extension of interface
+
 
 # Diagrams
 User Interface (Frontend)
@@ -122,13 +125,7 @@ For managing users, reviewing performance data, and adjusting model parameters a
 
 # Build Photos
 ![Team](Add photo of your team here)
-
-
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
+![WhatsApp Image 2025-02-02 at 10 42 03_fb4d9a85](https://github.com/user-attachments/assets/9b19bbf8-8d92-4bbb-bef4-ee8f7de11aa9)
 
 ![Final](Add photo of final product here)
 *Explain the final build*
@@ -137,6 +134,8 @@ For managing users, reviewing performance data, and adjusting model parameters a
 # Video
 [Add your demo video link here]
 *Explain what the video demonstrates*
+
+
 
 # Additional Demos
 [Add any extra demo materials/links]
