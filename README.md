@@ -134,16 +134,7 @@ For managing users, reviewing performance data, and adjusting model parameters a
 # Video
 [Add your demo video link here]
 *Explain what the video demonstrates*
-
-
-
-# Additional Demos
-[Add any extra demo materials/links]
-
-## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+https://github.com/OlisaMariaSubin/tinkerhackhako25/blob/main/vid.mp4
 
 ---
 Made with ❤️ at TinkerHub
