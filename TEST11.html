@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Replika AI Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #000;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #007bff;
+            border-bottom: 2px solid #0056b3;
+        }
+        header h2 {
+            color: #fff;
+            font-size: 28px;
+            margin: 0;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            padding-bottom: 5px;
+            transition: color 0.3s;
+        }
+        .nav a:hover {
+            color: #e0e0e0;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        h2 {
+            font-size: 36px;
+            color: #007bff;
+            margin: 10px 0;
+        }
+        .option-container {
+            margin-top: 20px;
+        }
+        .option-btn {
+            background-color: #007bff;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 10px;
+        }
+        .option-btn:hover {
+            background-color: #0056b3;
+        }
+        .chat-container {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        textarea {
+            width: 90%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .send-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .send-btn:hover {
+            background-color: #218838;
+        }
+        #response, #demoResponse {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>REPLIKA AI</h2>
+        <nav class="nav">
+            <a href="#">Home</a>
+            <a href="#">More Info</a>
+        </nav>
+    </header>
+
+    <h2>Welcome to Replika AI</h2>
+    <p>Choose an option below:</p>
+
+    <div class="option-container">
+        <button class="option-btn" onclick="startDemo()">Analyze Demo Text</button>
+        <button class="option-btn" onclick="startChat()">Chat with AI</button>
+    </div>
+
+    <div class="chat-container" id="demo-container">
+        <h3>Enter a Demo Text to Analyze</h3>
+        <textarea id="demoText" rows="4" placeholder="Type a message..."></textarea>
+        <button class="send-btn" onclick="analyzeText()">Analyze</button>
+        <p id="demoResponse"></p>
+    </div>
+
+    <div class="chat-container" id="chat-container">
+        <h3>Chat with AI</h3>
+        <textarea id="userMessage" rows="4" placeholder="Say something..."></textarea>
+        <button class="send-btn" onclick="sendMessage()">Send</button>
+        <p id="response"></p>
+    </div>
+
+    <script>
+        function startDemo() {
+            document.getElementById("demo-container").style.display = "block";
+            document.getElementById("chat-container").style.display = "none";
+        }
+
+        function startChat() {
+            document.getElementById("chat-container").style.display = "block";
+            document.getElementById("demo-container").style.display = "none";
+        }
+
+        async function analyzeText() {
+            let text = document.getElementById("demoText").value;
+            if (!text) return alert("Please enter some text.");
+
+            let response = await fetch("http://127.0.0.1:5000/analyze", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: text })
+            });
+
+            let data = await response.json();
+            document.getElementById("demoResponse").innerText = "AI Analysis: " + data.response;
+        }
+
+        async function sendMessage() {
+            let message = document.getElementById("userMessage").value;
+            if (!message) return alert("Please enter a message.");
+
+            let response = await fetch("http://127.0.0.1:5000/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message })
+            });
+
+            let data = await response.json();
+            document.getElementById("response").innerText = "AI: " + data.response;
+        }
+    </script>
+</body>
+</html>
